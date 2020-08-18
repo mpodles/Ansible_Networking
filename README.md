@@ -1,3 +1,4 @@
+ <!---
 # Ansible-Boilerplate
 
 [![GitHub Issues](https://img.shields.io/github/issues/acch/ansible-boilerplate.svg)](https://github.com/acch/ansible-boilerplate/issues) [![GitHub Stars](https://img.shields.io/github/stars/acch/ansible-boilerplate.svg?label=github%20%E2%98%85)](https://github.com/acch/ansible-boilerplate/) [![License](https://img.shields.io/github/license/acch/ansible-boilerplate.svg)](LICENSE)
@@ -25,7 +26,9 @@ Specifically, you'll want to customize the following files:
 - Define roles by adding subdirectories underneath directory `roles/`. You'll want to rename `anyrole/` to a more meaningful role name, and add your own roles as required.
 - Associate your hosts (groups) with your roles by adding appropriate playbooks in the root directory. Rename `anygroup.yml` to a more meaningful playbook name.
 - Import all your playbooks in the main `site.yml` playbook.
+--->
 
+# Ansible Networking
 ## Using Ansible
 
 Install `ansible` on your laptop and link the `hosts` file from `/etc/ansible/hosts` to the file in your repository. Now you're all set.
