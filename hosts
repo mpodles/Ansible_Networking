@@ -1,21 +1,16 @@
-# This is the default ansible 'hosts' file.
-#
-# It should live in your Git repository, and there should be a link from /etc/ansible/hosts:
-#   /etc/ansible/hosts -> /path/to/myAnsibleProject/hosts
-#
-#   - Comments begin with the '#' character
-#   - Blank lines are ignored
-#   - Groups of hosts are delimited by [header] elements
-#   - You can enter hostnames or ip addresses
-#   - A hostname/ip can be a member of multiple groups
+[autopods]
 
-[anygroup]
-server1     ansible_host=192.168.0.1
-server2     ansible_host=192.168.0.2
-server3     ansible_host=192.168.0.3
-server4     ansible_host=192.168.0.4
+[autopods:children]
+MXC
 
-# Add your own groups here. Hosts can be added to multiple groups like so:
-# [anothergroup]
-# server[1:3]
-# anotherserver     ansible_host=192.168.0.10
+[ansible:vars]
+ansible_user=admin
+ansible_password
+
+[MXC]
+9504-01 ansible_host=10.88.174.8
+9504-02 ansible_host=10.88.174.9
+9372PX-01 ansible_host=10.88.174.14
+9372PX-02 ansible_host=10.88.174.5
+93180-01 ansible_host=10.88.174.6
+93180-02 ansible_host=10.88.174.7
