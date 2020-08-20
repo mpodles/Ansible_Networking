@@ -3,9 +3,9 @@
 [autopods:children]
 MXC
 
-[ansible:vars]
+[autopods:vars]
 ansible_user=admin
-ansible_password
+ansible_password=cisco!123
 
 [MXC]
 9504-01 ansible_host=10.88.174.8
