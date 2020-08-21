@@ -1,11 +1,5 @@
----
-#
-# Tasks to be applied to some servers
-#
-- name: Check connectivity anyrole
-  ping:
-    data: alive
-  tags: check
-# Add tasks for a specific role to this playbook...
-
-...
+- name: Send system name - anyrole
+  debug:
+    msg: {ansible_distribution}
+    
+    

@@ -1,13 +1,5 @@
----
-#
-# Tasks to be applied to all servers
-#
-
-- name: Check connectivity common
-  ping:
-    data: alive
-  tags: check
-
-# Add further tasks for the common role (applied to all servers) to this playbook...
-
-...
+- name: Send system name - common
+  debug:
+    msg: {ansible_distribution}
+    
+    
