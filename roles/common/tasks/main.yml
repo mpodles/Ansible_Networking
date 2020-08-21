@@ -1,5 +1,7 @@
-- name: Send system name - common
-  debug:
-    msg: {ansible_distribution}
-    
-    
+- name: Send show run
+  nxos_command:
+    commands:
+      - show run
+  register: result_of_show_run
+- debug:
+    var: result_of_show_run
