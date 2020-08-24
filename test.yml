@@ -1,0 +1,5 @@
+- hosts: localhost
+  gather_facts: False
+  tasks:
+    - debug:
+        msg: It's working
