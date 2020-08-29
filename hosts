@@ -1,15 +1,14 @@
 [autopods]
 
-[autopods:children]
-MXC
-
 [autopods:vars]
 ansible_ssh_user=admin
 ansible_key=cisco!123
 ansible_connection=network_cli
 ansible_network_os=nxos
 
-
+[autopods:children]
+MXC
+VXLAN_SITE
 
 [MXC]
 9504-01 ansible_host=10.88.174.8
@@ -18,3 +17,17 @@ ansible_network_os=nxos
 9372PX-02 ansible_host=10.88.174.5
 93180-01 ansible_host=10.88.174.6
 93180-02 ansible_host=10.88.174.7
+
+[VXLAN_SITE:children]
+VXLAN_SITE_SPINES
+VXLAN_SITE_LEAVES
+
+[VXLAN_SITE_SPINES]
+Model1 ansible_host=
+Model2 ansible_host=
+
+[VXLAN_SITE_LEAVES]
+Model1 ansible_host=
+Model2 ansible_host=
+Model3 ansible_host=
+Model4 ansible_host=
