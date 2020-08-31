@@ -15,7 +15,7 @@
   nxos_interfaces:
     config:
       - name: Loopback0
-        description: 'Loopback for OSPF'
+        description: 'Loopback for multicast RP'
         mode: layer3
         enabled: True
       - name: Loopback1
@@ -64,13 +64,25 @@
     - interface Ethernet 1/1
     - interface Ethernet 1/2
 
-- name: Configure OSPF
+- name: Configure OSPF instance
   tags:
     - underlay_ospf
-  nxos_facts:
-    gather_subset: all
-    gather_network_resources: all
-  register: all_facts
+  nxos_ospf:
+    ospf: underlay
+    state: present
+
+- name: Configure OSPF interfaces
+  tags:
+    - underlay_ospf
+  nxos_interface_ospf:
+    interface: "{{ item }}"
+    ospf: 1
+    area: 0.0.0.0
+    bfd: disable
+    cost: default
+  loop:
+    - interface Ethernet 1/1
+    - interface Ethernet 1/2
 
 - name: Configure BGP
   tags:
