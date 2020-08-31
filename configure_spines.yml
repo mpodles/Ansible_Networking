@@ -1,0 +1,6 @@
+- hosts: VXLAN_SITE_SPINES
+  gather_facts: no
+  roles:
+    - spines
+
+
