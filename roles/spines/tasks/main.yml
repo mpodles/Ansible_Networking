@@ -39,24 +39,30 @@
         enabled: True
     state: replaced
 
-- name: Configure ip addresses of spine
+- name: Configure ip addresses of loopbacks
   tags:
     - ip_interfaces
   nxos_l3_interfaces:
     config:
       - name: Loopback0
         ipv4:
-          address: 192.168.1.1/24
+          - address: 192.168.1.1/24
       - name: Loopback1
         ipv4:
-          address: 192.168.2.1/24
-      - name: Ethernet 1/1
-        ipv4:
-          address: unnumbered Loopback0
-      - name: Ethernet 1/2
-        ipv4:
-          address: unnumbered Loopback0
+          - address: 192.168.2.1/24
     state: replaced
+
+- name: Configure ip unnumbered addresses of interfaces
+  tags:
+    - un_interfaces
+  nxos_config:
+    lines:
+      - medium p2p
+      - ip unnumbered Loopback0
+    parents: "{{item}}"
+  loop:
+    - interface Ethernet 1/1
+    - interface Ethernet 1/2
 
 - name: Configure OSPF
   tags:
