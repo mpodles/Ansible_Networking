@@ -8,26 +8,24 @@ ansible_network_os=nxos
 
 [autopods:children]
 MXC
-VXLAN_SITE
 
 [MXC]
-9504-01 ansible_host=10.88.174.8
-9504-02 ansible_host=10.88.174.9
-9372PX-01 ansible_host=10.88.174.14
-9372PX-02 ansible_host=10.88.174.5
-93180-01 ansible_host=10.88.174.6
-93180-02 ansible_host=10.88.174.7
+
+[MXC:children]
+VXLAN_SITE
+
+[VXLAN_SITE]
 
 [VXLAN_SITE:children]
 VXLAN_SITE_SPINES
 VXLAN_SITE_LEAVES
 
 [VXLAN_SITE_SPINES]
-Model1 ansible_host=
-Model2 ansible_host=
+9504-01 ansible_host=10.88.174.8
+9504-02 ansible_host=10.88.174.9
 
 [VXLAN_SITE_LEAVES]
-Model1 ansible_host=
-Model2 ansible_host=
-Model3 ansible_host=
-Model4 ansible_host=
+9372PX-01 ansible_host=10.88.174.14
+9372PX-02 ansible_host=10.88.174.5
+93180-01 ansible_host=10.88.174.6
+93180-02 ansible_host=10.88.174.7
