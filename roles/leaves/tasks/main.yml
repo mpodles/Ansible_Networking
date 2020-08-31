@@ -2,18 +2,16 @@
   tags:
     - features
   nxos_feature:
-    - feature: ospf
-      state: present
-    - feature: bgp
-      state: present
-    - feature: pim
-      state: present
-    - feature: interface_vlan
-      state: present
-    - feature: nv overlay
-      state: present
-    - feature: vn-setgment-vlan-based
-      state: present
+    feature: "{{ item }}"
+    state: present
+  loop:
+    - ospf
+    - pim
+    - bgp
+    - interface-vlan
+    - nv overlay
+    - vn-segment-vlan-based
+      
 - name: Configure loopback for ospf and bgp
   tags:
     - ip_interfaces
