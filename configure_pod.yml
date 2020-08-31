@@ -1,0 +1,14 @@
+- hosts: VXLAN_SITE_SPINES
+  name: Configure VXLAN_SITE_SPINES with spines role
+  gather_facts: no
+  roles:
+    - spines
+    
+- hosts: VXLAN_SITE_LEAVES
+  name: Configure VXLAN_SITE_LEAVES with leaves role
+  gather_facts: no
+  roles:
+    - leaves
+
+
+
