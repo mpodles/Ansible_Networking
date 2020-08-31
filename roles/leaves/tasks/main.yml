@@ -1,0 +1,68 @@
+- name: Configure features
+  tags:
+    - features
+  nxos_feature:
+    - feature: ospf
+      state: present
+    - feature: bgp
+      state: present
+    - feature: pim
+      state: present
+    - feature: interface_vlan
+      state: present
+    - feature: nv overlay
+      state: present
+    - feature: vn-setgment-vlan-based
+      state: present
+- name: Configure loopback for ospf and bgp
+  tags:
+    - ip_interfaces
+  nxos_interfaces:
+    config:
+      - name: Loopback0
+        description: 'Loopback for OSPF'
+        mode: layer3
+        ipv4: 1.1.1.1/24
+        enabled: True
+      - name: Loopback1
+        description: 'Loopback for BGP'
+        mode: layer3
+        ipv4: 2.2.2.2/24
+        enabled: True
+    state: replaced
+
+- name: Configure interfaces to spines
+  tags:
+    - leaves_upstream_int
+    - ip_interfaces
+  nxos_interfaces:
+    config:
+      - name: Gigabit 1/1
+        description: 'Gigabit towards Leaf 1'
+        mode: layer3
+        ipv4: unnumbered Loopback0
+        enabled: True
+      - name: Gigabit 1/2
+        description: 'Gigabit towards Leaf 2'
+        mode: layer3
+        ipv4: unnumbered Loopback0
+        enabled: True
+    state: replaced
+
+- name: Configure OSPF
+  tags:
+    - underlay_ospf
+  nxos_facts:
+    gather_subset: all
+    gather_network_resources: all
+  register: all_facts
+
+- name: Configure BGP
+  tags:
+    - overlay_bgp
+  nxos_facts:
+    gather_subset: all
+    gather_network_resources: all
+  register: all_facts
+
+  
