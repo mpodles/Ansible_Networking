@@ -3,7 +3,7 @@
     - features
   nxos_feature:
     feature: "{{ item }}"
-    state: present
+    state: enabled
   loop:
     - ospf
     - pim
@@ -14,37 +14,51 @@
       
 - name: Configure loopback for ospf and bgp
   tags:
-    - ip_interfaces
+    - loopback_interfaces
   nxos_interfaces:
     config:
       - name: Loopback0
         description: 'Loopback for OSPF'
         mode: layer3
-        ipv4: 1.1.1.1/24
         enabled: True
       - name: Loopback1
         description: 'Loopback for BGP'
         mode: layer3
-        ipv4: 2.2.2.2/24
         enabled: True
     state: replaced
 
 - name: Configure interfaces to spines
   tags:
     - leaves_upstream_int
-    - ip_interfaces
   nxos_interfaces:
     config:
-      - name: Gigabit 1/1
-        description: 'Gigabit towards Leaf 1'
+      - name: Ethernet 1/1
+        description: 'Ethernet towards Spine 1'
         mode: layer3
-        ipv4: unnumbered Loopback0
         enabled: True
-      - name: Gigabit 1/2
-        description: 'Gigabit towards Leaf 2'
+      - name: Ethernet 1/2
+        description: 'Ethernet towards Spine 2'
         mode: layer3
-        ipv4: unnumbered Loopback0
         enabled: True
+    state: replaced
+
+- name: Configure ip addresses of leaf
+  tags:
+    - ip_interfaces
+  nxos_l3_interfaces:
+    config:
+      - name: Loopback0
+        ipv4:
+          address: 192.168.1.1/24
+      - name: Loopback1
+        ipv4:
+          address: 192.168.2.1/24
+      - name: Ethernet 1/1
+        ipv4:
+          address: unnumbered Loopback0
+      - name: Ethernet 1/2
+        ipv4:
+          address: unnumbered Loopback0
     state: replaced
 
 - name: Configure OSPF
