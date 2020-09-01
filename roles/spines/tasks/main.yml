@@ -46,10 +46,10 @@
     config:
       - name: Loopback0
         ipv4:
-          - address: 192.168.1.1/24
+          - address: {{ ip_spine_loopback0 }}
       - name: Loopback1
         ipv4:
-          - address: 192.168.2.1/24
+          - address: {{ ip_spine_loopback1 }}
     state: replaced
 
 - name: Configure ip unnumbered addresses of interfaces
@@ -76,10 +76,12 @@
     - underlay_ospf
   nxos_interface_ospf:
     interface: "{{ item }}"
-    ospf: 1
+    ospf: underlay
     area: 0.0.0.0
     bfd: disable
     cost: default
+    network: point-to-point
+    state: present
   loop:
     - interface Ethernet 1/1
     - interface Ethernet 1/2
@@ -87,9 +89,8 @@
 - name: Configure BGP
   tags:
     - overlay_bgp
-  nxos_facts:
-    gather_subset: all
-    gather_network_resources: all
-  register: all_facts
-
+  nxos_bgp:
+    asn: {{ spine_asn_number}}
+    state: present
+    shutdown: no
   
