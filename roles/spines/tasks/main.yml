@@ -38,7 +38,7 @@
         mode: layer3
         enabled: True
     state: replaced
-  loop: "{{ leaf_uplinks }}"
+  loop: "{{ spine_downlinks }}"
 
 - name: Configure ip addresses of loopbacks
   tags:
@@ -61,7 +61,7 @@
       - medium p2p
       - ip unnumbered Loopback0
     parents: "interface {{ item }}"
-  loop: "{{ leaf_uplinks }}"
+  loop: "{{ spine_downlinks }}"
 
 - name: Configure OSPF instance
   tags:
@@ -79,13 +79,13 @@
     area: 0.0.0.0
     network: point-to-point
     state: present
-  loop: "{{ spine_uplinks }}"
+  loop: "{{ spine_downlinks + ['Loopback0'] + ['Loopback1'] }}|"
 
 - name: Configure BGP
   tags:
     - overlay_bgp
   nxos_bgp:
-    asn: "{{ spine_asn_number}}"
+    asn: "{{ spine_as_number }}"
     state: present
     shutdown: no
   

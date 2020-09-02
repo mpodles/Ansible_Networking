@@ -82,7 +82,7 @@
     area: 0.0.0.0
     network: point-to-point
     state: present
-  loop: "{{ leaf_uplinks }}"
+  loop: "{{ leaf_uplinks + ['Loopback0'] + ['Loopback1'] }}"
 
 - name: Configure BGP
   tags:
