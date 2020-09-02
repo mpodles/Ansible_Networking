@@ -16,11 +16,9 @@
     config:
       - name: Loopback0
         description: 'Loopback for multicast RP'
-        mode: layer3
         enabled: True
       - name: Loopback1
         description: 'Loopback for BGP'
-        mode: layer3
         enabled: True
     state: replaced
 
@@ -28,16 +26,13 @@
   tags:
     - spines_downstream_int
   nxos_interfaces:
-    config:
-      - name: Ethernet 1/1
-        description: 'Ethernet towards Leaf 1'
-        mode: layer3
-        enabled: True
-      - name: Ethernet 1/2
-        description: 'Ethernet towards Leaf 2'
+    config: 
+      - name: "{{ item }}"
+        description: 'Interface towards Leaf'
         mode: layer3
         enabled: True
     state: replaced
+  loop: "{{ leaf_uplinks }}"
 
 - name: Configure ip addresses of loopbacks
   tags:
@@ -59,10 +54,8 @@
     lines:
       - medium p2p
       - ip unnumbered Loopback0
-    parents: "{{ item }}"
-  loop:
-    - interface Ethernet 1/1
-    - interface Ethernet 1/2
+    parents: "interface {{ item }}"
+  loop: "{{ leaf_uplinks }}"
 
 - name: Configure OSPF instance
   tags:
@@ -78,13 +71,9 @@
     interface: "{{ item }}"
     ospf: underlay
     area: 0.0.0.0
-    bfd: disable
-    cost: default
     network: point-to-point
     state: present
-  loop:
-    - interface Ethernet 1/1
-    - interface Ethernet 1/2
+  loop: "{{ spine_uplinks }}"
 
 - name: Configure BGP
   tags:
