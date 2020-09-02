@@ -31,16 +31,13 @@
   tags:
     - leaves_upstream_int
   nxos_interfaces:
-    config:
-      - name: Ethernet 1/1
-        description: 'Ethernet towards Spine 1'
-        mode: layer3
-        enabled: True
-      - name: Ethernet 1/2
-        description: 'Ethernet towards Spine 2'
+    config: 
+      - name: "{{ item }}"
+        description: 'Interface towards Spine'
         mode: layer3
         enabled: True
     state: replaced
+    loop: "{{ leaf_uplinks }}"
 
 - name: Configure ip addresses of loopbacks
   tags:
@@ -49,10 +46,10 @@
     config:
       - name: Loopback0
         ipv4:
-          - address: {{ ip_leaf_loopback0 }}
+          - address: "{{ ip_leaf_loopback0 }}"
       - name: Loopback1
         ipv4:
-          - address: {{ ip_leaf_loopback1 }}
+          - address: "{{ ip_leaf_loopback1 }}"
     state: replaced
 
 - name: Configure ip unnumbered addresses of interfaces
@@ -62,10 +59,8 @@
     lines:
       - medium p2p
       - ip unnumbered Loopback0
-    parents: "{{item}}"
-  loop:
-    - interface Ethernet 1/1
-    - interface Ethernet 1/2
+    parents: interface "{{ item }}"
+  loop: "{{ leaf_uplinks }}"
 
 - name: Configure OSPF instance
   tags:
@@ -85,15 +80,13 @@
     cost: default
     network: point-to-point
     state: present
-  loop:
-    - interface Ethernet 1/1
-    - interface Ethernet 1/2
+  loop: "{{ leaf_uplinks }}"
 
 - name: Configure BGP
   tags:
     - overlay_bgp
   nxos_bgp:
-    asn: {{ spine_asn_number}}
+    asn: "{{ leaf_asn_number}}"
     state: present
     shutdown: no
 

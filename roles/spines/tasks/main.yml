@@ -46,10 +46,10 @@
     config:
       - name: Loopback0
         ipv4:
-          - address: {{ ip_spine_loopback0 }}
+          - address: "{{ ip_spine_loopback0 }}"
       - name: Loopback1
         ipv4:
-          - address: {{ ip_spine_loopback1 }}
+          - address: "{{ ip_spine_loopback1 }}"
     state: replaced
 
 - name: Configure ip unnumbered addresses of interfaces
@@ -59,7 +59,7 @@
     lines:
       - medium p2p
       - ip unnumbered Loopback0
-    parents: "{{item}}"
+    parents: "{{ item }}"
   loop:
     - interface Ethernet 1/1
     - interface Ethernet 1/2
@@ -90,7 +90,7 @@
   tags:
     - overlay_bgp
   nxos_bgp:
-    asn: {{ spine_asn_number}}
+    asn: "{{ spine_asn_number}}"
     state: present
     shutdown: no
   
