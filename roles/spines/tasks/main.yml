@@ -1,3 +1,9 @@
+- name: Set hostname
+  tags:
+    - setup
+  nxos_system:
+    hostname: "{{ ansible_host }}"
+
 - name: Configure features
   tags:
     - features
