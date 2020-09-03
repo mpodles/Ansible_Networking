@@ -1,6 +1,6 @@
 leaf_uplinks:
   - Ethernet 1/1
   - Ethernet 1/2
-ip_leaf_loopback0: 10.0.0.1/24
-ip_leaf_loopback1: 10.0.1.1/24
+ip_leaf_loopback0: 10.0.0.1/32
+ip_leaf_loopback1: 10.0.0.2/32
 leaf_as_number: 65501
