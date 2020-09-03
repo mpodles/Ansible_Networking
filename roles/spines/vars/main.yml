@@ -1,6 +1,7 @@
 spine_downlinks:
   - Ethernet 1/1
   - Ethernet 1/2
-ip_spine_loopback0: 10.0.0.1/32
-ip_spine_loopback1: 10.0.0.2/32
+rp_loopback_ip: 10.0.0.1/32
+bgp_loopback_ip: 10.0.0.2/32
 spine_as_number: 65501
+anycast_rp_ip: 10.0.0.254/32

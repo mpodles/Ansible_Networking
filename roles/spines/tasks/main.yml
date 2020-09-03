@@ -2,7 +2,7 @@
   tags:
     - setup
   nxos_system:
-    hostname: "{{ ansible_host }}"
+    hostname: "{{ inventory_hostname }}"
 
 - name: Configure features
   tags:
@@ -47,10 +47,10 @@
     config:
       - name: Loopback0
         ipv4:
-          - address: "{{ ip_spine_loopback0 }}"
+          - address: "{{ rp_loopback_ip }}"
       - name: Loopback1
         ipv4:
-          - address: "{{ ip_spine_loopback1 }}"
+          - address: "{{ bgp_loopback_ip }}"
     state: replaced
 
 - name: Configure ip unnumbered addresses of interfaces
