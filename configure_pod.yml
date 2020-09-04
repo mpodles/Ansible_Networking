@@ -1,14 +1,20 @@
-- hosts: VXLAN_SITE_SPINES
-  name: Configure VXLAN_SITE_SPINES with spines role
-  gather_facts: no
-  roles:
-    - spines
-    
-- hosts: VXLAN_SITE_LEAVES
-  name: Configure VXLAN_SITE_LEAVES with leaves role
-  gather_facts: no
-  roles:
-    - leaves
+- name: Import playbook configuring leaves
+  vars: 
+    vxlan_pod: VXLAN_SITE
+    vxlan_spines: VXLAN_SITE_SPINES
+    vxlan_leaves: VXLAN_SITE_LEAVES
+  include: configure_leaves.yml
+  tags:
+    - leaf
+
+- name: Import playbook configuring spines
+  vars: 
+    vxlan_pod: VXLAN_SITE
+    vxlan_spines: VXLAN_SITE_SPINES
+    vxlan_leaves: VXLAN_SITE_LEAVES
+  include: configure_spines.yml
+  tags:
+    - spine
 
 
 

@@ -1,6 +1,7 @@
-- hosts: VXLAN_SITE_LEAVES
+- hosts: "{{ vxlan_leaves }}"
+  name: Configuring hosts from "{{ vxlan_leaves }}" group with leaf role
   gather_facts: no
   roles:
-    - leaves
+    - leaf
 
 
