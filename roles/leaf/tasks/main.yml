@@ -88,8 +88,14 @@
   tags:
     - overlay_bgp
   nxos_bgp:
-    asn: "{{ leaf_as_number}}"
+    asn: "{{ leaf_as_number }}"
     state: present
     shutdown: no
 
-  
+- name: Test
+  tags:
+    - test
+  debug:
+    var: item
+  loop: 
+    "{{ groups[spines_group] }}"
