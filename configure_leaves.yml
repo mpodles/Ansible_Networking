@@ -1,5 +1,7 @@
-- hosts: "{{ vxlan_leaves }}"
-  name: Configuring hosts from "{{ vxlan_leaves }}" group with leaf role
+- hosts: "{{ global_vars.vxlan_leaves }}"
+  vars:
+    global_vars: "{{ lookup('file','vxlan_config.cfg') | cfg2dict }}"
+  name: Configuring hosts from "{{ global_vars.vxlan_leaves }}" group with leaf role
   gather_facts: no
   roles:
     - leaf

@@ -1,17 +1,9 @@
 - name: Import playbook configuring leaves
-  vars: 
-    vxlan_pod: VXLAN_SITE
-    vxlan_spines: VXLAN_SITE_SPINES
-    vxlan_leaves: VXLAN_SITE_LEAVES
   include: configure_leaves.yml
   tags:
     - leaf
 
 - name: Import playbook configuring spines
-  vars: 
-    vxlan_pod: VXLAN_SITE
-    vxlan_spines: VXLAN_SITE_SPINES
-    vxlan_leaves: VXLAN_SITE_LEAVES
   include: configure_spines.yml
   tags:
     - spine
