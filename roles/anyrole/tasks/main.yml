@@ -1,5 +1,0 @@
-- name: Send system name - anyrole
-  debug:
-    msg: {ansible_distribution}
-    
-    

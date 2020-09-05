@@ -1,7 +1,0 @@
-- hosts: MXC
-  gather_facts: no
-  roles:
-    - common
-    - anyrole
-
-
