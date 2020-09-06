@@ -20,10 +20,10 @@
     - loopback_interfaces
   nxos_interfaces:
     config:
-      - name: Loopback0
+      - name: "{{ rp_loopback_int }}"
         description: 'Loopback for multicast RP'
         enabled: True
-      - name: Loopback1
+      - name: "{{ bgp_loopback_int }}"
         description: 'Loopback for BGP'
         enabled: True
     state: replaced
@@ -38,7 +38,7 @@
         mode: layer3
         enabled: True
     state: replaced
-  loop: "{{ spine_downlinks }}"
+  loop: "{{ downlinks }}"
 
 - name: Configure ip addresses of loopbacks
   tags:
@@ -61,7 +61,7 @@
       - medium p2p
       - ip unnumbered Loopback0
     parents: "interface {{ item }}"
-  loop: "{{ spine_downlinks }}"
+  loop: "{{ downlinks }}"
 
 - name: Configure OSPF instance
   tags:
@@ -79,13 +79,40 @@
     area: 0.0.0.0
     network: point-to-point
     state: present
-  loop: "{{ spine_downlinks + ['Loopback0'] + ['Loopback1'] }}|"
+  loop: "{{ downlinks + ['Loopback0'] + ['Loopback1'] }}|"
 
 - name: Configure BGP
   tags:
     - overlay_bgp
   nxos_bgp:
-    asn: "{{ spine_as_number }}"
+    asn: "{{ as_number }}"
     state: present
     shutdown: no
+
+- name: Configure BGP neighbors
+  tags:
+    - overlay_bgp
+  nxos_bgp_neighbor:
+    asn: "{{ as_number }}"
+    remote_as: "{{ hostvars[item].as_number }}"
+    state: present
+    shutdown: no
+    update_source: "{{ bgp_loopback_int }}" 
+  loop: 
+    "{{ groups[leaves_group] }}"
+
+
+- name: Test 1
+  tags:
+    - test
+  debug:
+    msg: "{{ hostvars['9504-01'] }}"
+
+- name: Test 2
+  tags:
+    - test
+  debug:
+    msg: "{{ hostvars[item].as_number }}"
+  loop: 
+    "{{ groups[leaves_group] }}"
   
