@@ -92,7 +92,7 @@
     state: present
     shutdown: no
 
-- name: Configure BGP neighbors
+- name: Configure spines as BGP neighbors
   tags:
     - overlay_bgp
   nxos_bgp_neighbor:
@@ -105,17 +105,50 @@
   loop: 
     "{{ groups[spines_group] }}"
 
+- name: Configure l2vpn evpn address-family for neighbors
+  tags: 
+    - overlay_bgp
+  nxos_bgp_neighbor_af:
+    asn: "{{ as_number }}"
+    neighbor: "{{ hostvars[item].bgp_loopback_ip }}"
+    afi: l2vpn
+    safi: evpn
+    send_community: extended
+  loop: 
+    "{{ groups[spines_group] }}"
+
 
 - name: Test 1
   tags:
     - test
   debug:
-    msg: "{{ hostvars['9504-01'] }}"
+    msg: "{{ inventory_hostname }}"
 
 - name: Test 2
   tags:
     - test
+  # nxos_bgp_neighbor:
+  #   asn: 61111
+  #   remote_as: "{{ hostvars[item].as_number }}"
+  #   state: present
+  #   shutdown: no
+  #   update_source: "{{ bgp_loopback_int }}" 
+  #   neighbor: "{{ hostvars[item].bgp_loopback_ip }}"
+  #   vrf: management
+  # loop: 
+  #   "{{ groups[spines_group] }}"
+  nxos_bgp_neighbor_af:
+    asn: 61111
+    neighbor: 2.2.2.2
+    afi: ipv4
+    safi: unicast
+    send_community: extended
+    vrf: management
+  when: inventory_hostname == "93180-01"
+  register: wynik
+
+- name: Test 3
+  tags:
+    - test
   debug:
-    msg: "{{ hostvars[item].as_number }}"
-  loop: 
-    "{{ groups[spines_group] }}"
+    var: wynik

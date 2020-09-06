@@ -89,7 +89,7 @@
     state: present
     shutdown: no
 
-- name: Configure BGP neighbors
+- name: Configure leaves as BGP neighbors
   tags:
     - overlay_bgp
   nxos_bgp_neighbor:
@@ -103,17 +103,30 @@
     "{{ groups[leaves_group] }}"
 
 
-- name: Test 1
-  tags:
-    - test
-  debug:
-    msg: "{{ hostvars['9504-01'] }}"
-
-- name: Test 2
-  tags:
-    - test
-  debug:
-    msg: "{{ hostvars[item].as_number }}"
+- name: Configure l2vpn evpn address-family for neighbors
+  tags: 
+    - overlay_bgp
+  nxos_bgp_neighbor_af:
+    asn: "{{ as_number }}"
+    neighbor: "{{ hostvars[item].bgp_loopback_ip }}"
+    afi: l2vpn
+    safi: evpn
+    send_community: extended
+    route_reflector_client: yes
   loop: 
     "{{ groups[leaves_group] }}"
+
+# - name: Test 1
+#   tags:
+#     - test
+#   debug:
+#     msg: "{{ hostvars['9504-01'] }}"
+
+# - name: Test 2
+#   tags:
+#     - test
+#   debug:
+#     msg: "{{ hostvars[item].as_number }}"
+#   loop: 
+#     "{{ groups[leaves_group] }}"
   
