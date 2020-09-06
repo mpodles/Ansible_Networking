@@ -1,10 +1,10 @@
 - name: Import playbook configuring leaves
-  include: configure_leaves.yml
+  import_playbook: configure_leaves.yml
   tags:
     - leaf
 
 - name: Import playbook configuring spines
-  include: configure_spines.yml
+  import_playbook: configure_spines.yml
   tags:
     - spine
 
