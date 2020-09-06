@@ -1,5 +1,7 @@
-leaf_uplinks:
+uplinks:
     - Ethernet 1/1
+nve_loopback_int: Loopback0
+bgp_loopback_int: Loopback1
 nve_loopback_ip: 10.0.0.1/32
 bgp_loopback_ip: 10.1.0.1/32
-leaf_as_number: 65501
+as_number: 65501
