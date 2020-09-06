@@ -1,5 +1,7 @@
-- hosts: "{{ global_vars.vxlan_spines }}"
-  name: Configuring hosts from "{{ global_vars.vxlan_spines }}" group with spine role
+- hosts: "{{ spines_group }}"
+  vars_files:
+    - ./vars_files/vxlan_config.yml
+  name: Configuring hosts from "{{ spines_group }}" group with spine role
   gather_facts: no
   roles:
     - spine
