@@ -1,0 +1,6 @@
+VXLAN_SITE_LEAVES:
+    leaf_uplinks:
+        - Ethernet 1/[1:3]
+    nve_loopback_ip: 10.0.0.1/32
+    bgp_loopback_ip: 10.1.0.1/32
+    leaf_as_number: 65501
