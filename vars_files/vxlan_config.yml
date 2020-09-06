@@ -1,0 +1,5 @@
+pod: VXLAN_SITE
+spines_group: VXLAN_SITE_SPINES
+leaves_group: VXLAN_SITE_LEAVES
+
+
