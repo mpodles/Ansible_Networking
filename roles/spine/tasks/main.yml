@@ -97,7 +97,8 @@
     remote_as: "{{ hostvars[item].as_number }}"
     state: present
     shutdown: no
-    update_source: "{{ bgp_loopback_int }}" 
+    update_source: "{{ bgp_loopback_int }}"
+    neighbor: "{{ hostvars[item].bgp_loopback_ip }}"
   loop: 
     "{{ groups[leaves_group] }}"
 

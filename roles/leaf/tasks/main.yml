@@ -101,6 +101,7 @@
     state: present
     shutdown: no
     update_source: "{{ bgp_loopback_int }}" 
+    neighbor: "{{ hostvars[item].bgp_loopback_ip }}"
   loop: 
     "{{ groups[spines_group] }}"
 
