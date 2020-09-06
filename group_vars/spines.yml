@@ -1,7 +1,0 @@
-VXLAN_SITE_SPINES:
-    spine_downlinks:
-        - Ethernet 1/[1:2]
-    rp_loopback_ip: 10.0.0.1/32
-    bgp_loopback_ip: 10.1.0.1/32
-    spine_as_number: 65501
-    anycast_rp_ip: 10.0.0.254/32
