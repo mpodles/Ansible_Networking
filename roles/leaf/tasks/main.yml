@@ -134,6 +134,15 @@
   loop: 
     "{{ groups[spines_group] }}"
 
+- name: Configure NVE interface for VxLAN
+  tags: 
+    - vxlan_int
+  nxos_vxlan_vtep:
+      interface: nve1 
+      description: "VTEP for VXLAN" 
+      shutdown: no
+      source_interface: "{{ nve_loopback_int }}" 
+      host_reachability: yes
 
 - name: Test 1
   tags:
@@ -144,23 +153,12 @@
 - name: Test 2
   tags:
     - test
-  # nxos_bgp_neighbor:
-  #   asn: 61111
-  #   remote_as: "{{ hostvars[item].as_number }}"
-  #   state: present
-  #   shutdown: no
-  #   update_source: "{{ bgp_loopback_int }}" 
-  #   neighbor: "{{ hostvars[item].bgp_loopback_ip }}"
-  #   vrf: management
-  # loop: 
-  #   "{{ groups[spines_group] }}"
-  nxos_bgp_neighbor_af:
-    asn: 61111
-    neighbor: 2.2.2.2
-    afi: ipv4
-    safi: unicast
-    send_community: extended
-    vrf: management
+  nxos_vxlan_vtep:
+      interface: nve1 
+      description: "VTEP for VXLAN" 
+      shutdown: no
+      source_interface: "{{ nve_loopback_int }}" 
+      host_reachability: yes
   when: inventory_hostname == "93180-01"
   register: wynik
 
