@@ -105,7 +105,16 @@
   loop: 
     "{{ groups[spines_group] }}"
 
-- name: Configure l2vpn evpn address-family for neighbors
+- name: Configure BGP l2vpn evpn address-family
+  tags:
+    - overlay_bgp
+  nxos_bgp_af:
+    asn: "{{ as_number }}"
+    afi: l2vpn
+    safi: evpn
+    vrf: default
+    
+- name: Configure BGP l2vpn evpn address-family for neighbors
   tags: 
     - overlay_bgp
   nxos_bgp_neighbor_af:

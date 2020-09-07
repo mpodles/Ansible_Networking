@@ -79,7 +79,7 @@
     area: 0.0.0.0
     network: point-to-point
     state: present
-  loop: "{{ downlinks + ['Loopback0'] + ['Loopback1'] }}|"
+  loop: "{{ downlinks + bgp_loopback_int + rp_loopback_int }}|"
 
 - name: Configure BGP
   tags:
@@ -102,8 +102,16 @@
   loop: 
     "{{ groups[leaves_group] }}"
 
-
-- name: Configure l2vpn evpn address-family for neighbors
+- name: Configure BGP l2vpn evpn address-family
+  tags:
+    - overlay_bgp
+  nxos_bgp_af:
+    asn: "{{ as_number }}"
+    afi: l2vpn
+    safi: evpn
+    vrf: default
+    
+- name: Configure BGP l2vpn evpn address-family for neighbors
   tags: 
     - overlay_bgp
   nxos_bgp_neighbor_af:
