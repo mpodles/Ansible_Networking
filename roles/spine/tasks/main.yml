@@ -6,6 +6,7 @@
 
 - name: Configure features
   tags:
+    - setup
     - features
   nxos_feature:
     feature: "{{ item }}"
@@ -14,6 +15,13 @@
     - ospf
     - pim
     - bgp
+
+- name: Configure global evpn as overlay
+  tags:
+    - setup
+    - overlay_bgp
+  nxos_evpn_global:
+    nv_overlay_evpn: yes
 
 - name: Configure loopback for ospf and bgp
   tags:

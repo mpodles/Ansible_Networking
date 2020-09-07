@@ -7,6 +7,7 @@
 - name: Configure features
   tags:
     - features
+    - setup
   nxos_feature:
     feature: "{{ item }}"
     state: enabled
@@ -17,7 +18,14 @@
     - interface-vlan
     - nv overlay
     - vn-segment-vlan-based
-      
+ 
+- name: Configure global evpn as overlay
+  tags:
+    - setup
+    - overlay_bgp
+  nxos_evpn_global:
+    nv_overlay_evpn: yes
+     
 - name: Configure loopback for ospf and bgp
   tags:
     - loopback_interfaces
@@ -113,7 +121,7 @@
     afi: l2vpn
     safi: evpn
     vrf: default
-    
+
 - name: Configure BGP l2vpn evpn address-family for neighbors
   tags: 
     - overlay_bgp
