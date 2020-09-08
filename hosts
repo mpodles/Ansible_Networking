@@ -2,7 +2,7 @@
 
 [autopods:vars]
 ansible_ssh_user=admin
-ansible_key=cisco!123
+ansible_password=cisco!123
 ansible_connection=network_cli
 ansible_network_os=nxos
 
