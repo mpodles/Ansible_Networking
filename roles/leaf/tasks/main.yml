@@ -144,6 +144,15 @@
       source_interface: "{{ nve_loopback_int }}" 
       host_reachability: yes
 
+- name: Configure pim interfaces
+  tags: 
+    - multicast
+  nxos_pim_interface:
+      interface: "{{ items }}" 
+      state: present
+      sparse: yes
+  loop: "{{ downlinks + bgp_loopback_int + nve_loopback_int }}"
+
 - name: Test 1
   tags:
     - test
