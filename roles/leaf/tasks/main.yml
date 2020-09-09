@@ -56,10 +56,10 @@
     - ip_interfaces
   nxos_l3_interfaces:
     config:
-      - name: Loopback0
+      - name: "{{ nve_loopback_int }}"
         ipv4:
           - address: "{{ nve_loopback_ip }}"
-      - name: Loopback1
+      - name: "{{ bgp_loopback_int }}"
         ipv4:
           - address: "{{ bgp_loopback_ip }}"
     state: replaced
@@ -70,7 +70,7 @@
   nxos_config:
     lines:
       - medium p2p
-      - ip unnumbered Loopback0
+      - ip unnumbered "{{ bgp_loopback_int }}"
     parents: "interface {{ item }}"
   loop: "{{ uplinks }}"
 
@@ -144,14 +144,22 @@
       source_interface: "{{ nve_loopback_int }}" 
       host_reachability: yes
 
-- name: Configure pim interfaces
+- name: Configure PIM interfaces
   tags: 
     - multicast
   nxos_pim_interface:
-      interface: "{{ items }}" 
+      interface: "{{ item }}" 
       state: present
       sparse: yes
   loop: "{{ downlinks + bgp_loopback_int + nve_loopback_int }}"
+
+- name: Configure PIM RP towards "{{ anycast_rp_ip }}"
+  tags: 
+    - multicast
+  nxos_pim_rp_address:
+      rp_address: "{{ anycast_rp_ip }}"
+      bidir: yes 
+      state: present
 
 - name: Test 1
   tags:

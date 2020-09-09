@@ -31,6 +31,9 @@
       - name: "{{ rp_loopback_int }}"
         description: 'Loopback for multicast RP'
         enabled: True
+      - name: "{{ anycast_rp_loopback_int }}"
+        description: 'Loopback for multicast anycast-RP'
+        enabled: True
       - name: "{{ bgp_loopback_int }}"
         description: 'Loopback for BGP'
         enabled: True
@@ -53,10 +56,13 @@
     - ip_interfaces
   nxos_l3_interfaces:
     config:
-      - name: Loopback0
+      - name: "{{ rp_loopback_int }}"
         ipv4:
           - address: "{{ rp_loopback_ip }}"
-      - name: Loopback1
+      - name: "{{ anycast_rp_loopback_int }}"
+        ipv4:
+          - address: "{{ anycast_rp_loopback_ip }}"
+      - name: "{{ bgp_loopback_int }}"
         ipv4:
           - address: "{{ bgp_loopback_ip }}"
     state: replaced
@@ -67,7 +73,7 @@
   nxos_config:
     lines:
       - medium p2p
-      - ip unnumbered Loopback0
+      - ip unnumbered "{{ bgp_loopback_int }}"
     parents: "interface {{ item }}"
   loop: "{{ downlinks }}"
 
@@ -87,7 +93,7 @@
     area: 0.0.0.0
     network: point-to-point
     state: present
-  loop: "{{ downlinks + bgp_loopback_int + rp_loopback_int }}"
+  loop: "{{ downlinks + bgp_loopback_int + rp_loopback_int + anycast_rp_loopback_int}}"
 
 - name: Configure BGP
   tags:
@@ -132,14 +138,29 @@
   loop: 
     "{{ groups[leaves_group] }}"
 
-- name: Configure pim interfaces
+- name: Configure PIM interfaces
   tags: 
     - multicast
   nxos_pim_interface:
-      interface: "{{ items }}" 
+      interface: "{{ item }}" 
       state: present
       sparse: yes
-  loop: "{{ downlinks + bgp_loopback_int + rp_loopback_int }}"
+  loop: "{{ downlinks + bgp_loopback_int + rp_loopback_int + anycast_rp_loopback_int }}"
+
+- name: Configure PIM RP towards "{{ anycast_rp_ip }}"
+  tags: 
+    - multicast
+  nxos_pim_rp_address:
+      rp_address: "{{ anycast_rp_ip }}"
+      bidir: yes 
+      state: present
+
+- name: Configure anycast RP
+  tags: 
+    - multicast
+  nxos_config:
+      lines:
+        - ip pim anycast-rp "{{ anycast_rp_ip }}" "{{ rp_loopback_ip }}"
 
 # - name: Test 1
 #   tags:
