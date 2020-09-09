@@ -2,7 +2,7 @@
 # Default is to log in as root
 ansible_user: root
 remote_user: root
-
+anycast_rp_ip: 10.0.0.254/32
 # Add further variables which apply to all servers to this file...
 
 ...
