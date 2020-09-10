@@ -23,7 +23,7 @@
   nxos_evpn_global:
     nv_overlay_evpn: yes
 
-- name: Configure loopback for ospf and bgp
+- name: Configure loopback for BGP, PIM RP and PIM Anycast-RP
   tags:
     - loopback_interfaces
   nxos_interfaces:
@@ -73,7 +73,7 @@
   nxos_config:
     lines:
       - medium p2p
-      - ip unnumbered "{{ bgp_loopback_int }}"
+      - ip unnumbered {{ bgp_loopback_int }}
     parents: "interface {{ item }}"
   loop: "{{ downlinks }}"
 
@@ -93,7 +93,7 @@
     area: 0.0.0.0
     network: point-to-point
     state: present
-  loop: "{{ downlinks + bgp_loopback_int + rp_loopback_int + anycast_rp_loopback_int}}"
+  loop: "{{ downlinks + [bgp_loopback_int] + [rp_loopback_int] + [anycast_rp_loopback_int]}}"
 
 - name: Configure BGP
   tags:
@@ -145,22 +145,22 @@
       interface: "{{ item }}" 
       state: present
       sparse: yes
-  loop: "{{ downlinks + bgp_loopback_int + rp_loopback_int + anycast_rp_loopback_int }}"
+  loop: "{{ downlinks + [bgp_loopback_int] + [rp_loopback_int] + [anycast_rp_loopback_int] }}"
 
-- name: Configure PIM RP towards "{{ anycast_rp_ip }}"
+- name: Configure PIM RP towards "{{ anycast_rp_ip | ipaddr('address') }}"
   tags: 
     - multicast
   nxos_pim_rp_address:
-      rp_address: "{{ anycast_rp_ip }}"
+      rp_address: "{{ anycast_rp_ip | ipaddr('address') }}"
       bidir: yes 
       state: present
 
-- name: Configure anycast RP
+- name: Configure anycast RP at "{{ anycast_rp_ip | ipaddr('address') }}"
   tags: 
     - multicast
   nxos_config:
       lines:
-        - ip pim anycast-rp "{{ anycast_rp_ip }}" "{{ rp_loopback_ip }}"
+        - ip pim anycast-rp {{ anycast_rp_ip | ipaddr('address') }} {{ rp_loopback_ip | ipaddr('address') }}
 
 # - name: Test 1
 #   tags:

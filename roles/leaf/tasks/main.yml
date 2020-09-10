@@ -70,7 +70,7 @@
   nxos_config:
     lines:
       - medium p2p
-      - ip unnumbered "{{ bgp_loopback_int }}"
+      - ip unnumbered {{ bgp_loopback_int }}
     parents: "interface {{ item }}"
   loop: "{{ uplinks }}"
 
@@ -90,7 +90,7 @@
     area: 0.0.0.0
     network: point-to-point
     state: present
-  loop: "{{ uplinks + bgp_loopback_int + nve_loopback_int }}"
+  loop: "{{ uplinks + [bgp_loopback_int] + [nve_loopback_int] }}"
 
 - name: Configure BGP instance
   tags:
@@ -151,13 +151,13 @@
       interface: "{{ item }}" 
       state: present
       sparse: yes
-  loop: "{{ downlinks + bgp_loopback_int + nve_loopback_int }}"
+  loop: "{{ uplinks + [bgp_loopback_int] + [nve_loopback_int] }}"
 
-- name: Configure PIM RP towards "{{ anycast_rp_ip }}"
+- name: Configure PIM RP towards "{{ anycast_rp_ip | ipaddr('address') }}"
   tags: 
     - multicast
   nxos_pim_rp_address:
-      rp_address: "{{ anycast_rp_ip }}"
+      rp_address: "{{ anycast_rp_ip | ipaddr('address') }}"
       bidir: yes 
       state: present
 
