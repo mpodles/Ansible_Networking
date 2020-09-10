@@ -1,0 +1,18 @@
+- hosts: all
+  strategy: free
+  vars_files:
+    - ./vars_files/vxlan_config.yml
+  name: Configuring hosts from "{{ leaves_group }}" group with leaf role and hosts from "{{ spines_group }}" group with spine role
+  gather_facts: no
+  tasks:
+    - name: Give hosts from {{ leaves_group }} leaf role
+      include_role: 
+        name: leaf
+      when: leaves_group in group_names
+
+    - name: Give hosts from {{ spines_group }} spine role
+      include_role: 
+        name: spine
+      when: spines_group in group_names
+      
+
