@@ -1,0 +1,13 @@
+vrf: customerC
+vlan_to_vni:
+  - vlan: 1150
+    vni: 301150
+    rd: 12:13
+  - vlan: 1200
+    vni: 301200
+  - vlan: 1720
+    rt: 11:11
+    rd: 14:25
+l3_vni: 
+  vlan: 1313
+  vni: 301313

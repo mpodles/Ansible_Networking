@@ -1,0 +1,12 @@
+vrf: customerB
+vlan_to_vni:
+  - vlan: 150
+    vni: 200150
+    rd: 12:13
+  - vlan: 200
+    vni: 200200
+  - vlan: 720
+    rt: 11
+l3_vni: 
+  vlan: 13
+  vni: 200013

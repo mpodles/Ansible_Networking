@@ -1,0 +1,10 @@
+vrf: customerA
+vlan_to_vni:
+  - vlan: 400
+    vni: 100400
+  - vlan: 500
+    vni: 100500
+  - vlan: 420
+l3_vni: 
+  vlan: 1
+  vni: 100001
