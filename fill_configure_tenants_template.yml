@@ -1,0 +1,10 @@
+- hosts: localhost
+  vars_files:
+    - ./vars_files/vxlan_config.yml
+  gather_facts: no
+  tasks:
+    - name: Make new template to configure tenants in pararell
+      template: 
+        src: ./configure_tenants_template.j2
+        dest: ./configure_tenants.yml
+      

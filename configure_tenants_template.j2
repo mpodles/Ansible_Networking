@@ -1,0 +1,13 @@
+- hosts: all
+  strategy: free
+  name: Configuring all tenants in vxlan_config file
+  gather_facts: no
+  tasks:
+{% for tenant in tenant_groups%}
+    - name: Give hosts from {{ tenant }} tenant role
+      vars:
+        tenant: {{ tenant }}
+      include_role:
+        name: tenant
+      when: tenant in group_names
+{% endfor %}

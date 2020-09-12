@@ -1,0 +1,23 @@
+- hosts: all
+  strategy: free
+  name: Configuring all tenants in vxlan_config file
+  gather_facts: no
+  tasks:
+    - name: Give hosts from VXLAN_SITE_TENANT_1 tenant role
+      vars:
+        tenant: VXLAN_SITE_TENANT_1
+      debug:
+        msg: VXLAN_SITE_TENANT_1
+      when: tenant in group_names
+    - name: Give hosts from VXLAN_SITE_TENANT_2 tenant role
+      vars:
+        tenant: VXLAN_SITE_TENANT_2
+      debug:
+        msg: VXLAN_SITE_TENANT_2
+      when: tenant in group_names
+    - name: Give hosts from VXLAN_SITE_TENANT_3 tenant role
+      vars:
+        tenant: VXLAN_SITE_TENANT_3
+      debug:
+        msg: VXLAN_SITE_TENANT_3
+      when: tenant in group_names
