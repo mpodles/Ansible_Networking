@@ -1,5 +1,9 @@
 pod: VXLAN_SITE
 spines_group: VXLAN_SITE_SPINES
 leaves_group: VXLAN_SITE_LEAVES
+tenant_groups: 
+  - VXLAN_SITE_TENANT_1 
+  - VXLAN_SITE_TENANT_2
+  - VXLAN_SITE_TENANT_3
 
 
