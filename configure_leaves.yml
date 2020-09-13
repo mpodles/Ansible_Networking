@@ -3,7 +3,14 @@
     - ./vars_files/vxlan_config.yml
   name: Configuring hosts from "{{ leaves_group }}" group with leaf role
   gather_facts: no
-  roles:
-    - leaf
-
-
+  tasks:
+    - name: Task that include leaf role
+      include_role:
+        name: leaf
+        vars_from: "{{ leaves_group }}"
+        apply:
+          tags:
+            - leaves
+      tags:
+        - always
+        

@@ -1,7 +1,16 @@
 - hosts: "{{ spines_group }}"
   vars_files:
     - ./vars_files/vxlan_config.yml
-  name: Configuring hosts from "{{ spines_group }}" group with spine role
+  name: Configuring hosts from {{ spines_group }} group with spine role
   gather_facts: no
-  roles:
-    - spine
+  tasks:
+    - name: Task that include spine role
+      include_role:
+        name: spine
+        vars_from: "{{ spines_group }}"
+        apply:
+          tags:
+            - spines
+      tags:
+        - always
+      
