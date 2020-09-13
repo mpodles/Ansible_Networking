@@ -1,5 +1,17 @@
-- name: Test 1
+- name: Configure VLANs and map VNIs to them
   tags:
-    - test
-  debug:
-    var: vars
+    - vlans
+  nxos_vlan:
+    vlan_state: active
+    mapped_vni: "{{ item.vni | default(item.vlan) }}"
+    state: replaced 
+    admin_state: up 
+    vlan_id: "{{ item.vlan }}"
+  loop: vlans_to_vni
+
+- name: Configure VRF
+  tags:
+    - vrf
+  nxos_vrf:
+    admin_state: up
+    name: "{{ vrf }}"
