@@ -6,8 +6,9 @@
 {% for tenant in tenant_groups%}
     - name: Give hosts from {{ tenant }} tenant role
       vars:
-        tenant: {{ tenant }}
+        tenant_tmp_var: {{ tenant }}
       include_role:
         name: tenant
-      when: tenant in group_names
+        vars_from: {{ tenant }}
+      when: tenant_tmp_var in group_names
 {% endfor %}

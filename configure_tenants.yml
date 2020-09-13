@@ -5,19 +5,22 @@
   tasks:
     - name: Give hosts from VXLAN_SITE_TENANT_1 tenant role
       vars:
-        tenant: VXLAN_SITE_TENANT_1
-      debug:
-        msg: VXLAN_SITE_TENANT_1
-      when: tenant in group_names
+        tenant_tmp_var: VXLAN_SITE_TENANT_1
+      include_role:
+        name: tenant
+        vars_from: VXLAN_SITE_TENANT_1
+      when: tenant_tmp_var in group_names
     - name: Give hosts from VXLAN_SITE_TENANT_2 tenant role
       vars:
-        tenant: VXLAN_SITE_TENANT_2
-      debug:
-        msg: VXLAN_SITE_TENANT_2
-      when: tenant in group_names
+        tenant_tmp_var: VXLAN_SITE_TENANT_2
+      include_role:
+        name: tenant
+        vars_from: VXLAN_SITE_TENANT_2
+      when: tenant_tmp_var in group_names
     - name: Give hosts from VXLAN_SITE_TENANT_3 tenant role
       vars:
-        tenant: VXLAN_SITE_TENANT_3
-      debug:
-        msg: VXLAN_SITE_TENANT_3
-      when: tenant in group_names
+        tenant_tmp_var: VXLAN_SITE_TENANT_3
+      include_role:
+        name: tenant
+        vars_from: VXLAN_SITE_TENANT_3
+      when: tenant_tmp_var in group_names
