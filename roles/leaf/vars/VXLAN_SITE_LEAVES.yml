@@ -5,3 +5,4 @@ bgp_loopback_int: Loopback1
 nve_loopback_ip: 10.0.0.1/32
 bgp_loopback_ip: 10.1.0.1/32
 as_number: 65501
+anycast_rp_ip: 10.0.0.254/32
