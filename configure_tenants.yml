@@ -10,6 +10,8 @@
         name: tenant
         vars_from: VXLAN_SITE_TENANT_1
       when: tenant_tmp_var in group_names
+      tags:
+        - always
     - name: Give hosts from VXLAN_SITE_TENANT_2 tenant role
       vars:
         tenant_tmp_var: VXLAN_SITE_TENANT_2
@@ -17,6 +19,8 @@
         name: tenant
         vars_from: VXLAN_SITE_TENANT_2
       when: tenant_tmp_var in group_names
+      tags:
+        - always
     - name: Give hosts from VXLAN_SITE_TENANT_3 tenant role
       vars:
         tenant_tmp_var: VXLAN_SITE_TENANT_3
@@ -24,3 +28,5 @@
         name: tenant
         vars_from: VXLAN_SITE_TENANT_3
       when: tenant_tmp_var in group_names
+      tags:
+        - always

@@ -11,4 +11,6 @@
         name: tenant
         vars_from: {{ tenant }}
       when: tenant_tmp_var in group_names
+      tags:
+        - always
 {% endfor %}
