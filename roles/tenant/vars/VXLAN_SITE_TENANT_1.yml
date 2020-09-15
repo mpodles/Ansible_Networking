@@ -2,9 +2,25 @@ vrf: customerA
 vlan_to_vni:
   - vlan: 400
     vni: 100400
+    
   - vlan: 500
     vni: 100500
-  - vlan: 420
+
+  - vlan: 420     
+    route_targets:
+      - rt: 122:322   
+        direction: export
+    
+  - vlan: 430
+    route_targets:
+      - rt: 122:322   
+        direction: export
+      - rt: 132:322   
+        direction: export
+      
+
 l3_vni: 
   vlan: 1
   vni: 100001
+  rt: 555:234
+  rt_evpn: 123:432

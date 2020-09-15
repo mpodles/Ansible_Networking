@@ -6,7 +6,6 @@ vlan_to_vni:
   - vlan: 1200
     vni: 301200
   - vlan: 1720
-    rt: 11:11
     rd: 14:25
 l3_vni: 
   vlan: 1313

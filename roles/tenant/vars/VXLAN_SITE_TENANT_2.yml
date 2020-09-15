@@ -6,7 +6,6 @@ vlan_to_vni:
   - vlan: 200
     vni: 200200
   - vlan: 720
-    rt: 11
 l3_vni: 
   vlan: 13
   vni: 200013
