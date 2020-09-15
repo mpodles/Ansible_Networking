@@ -1,13 +1,34 @@
+- name: Set helping variables
+  tags:
+    - always 
+  set_fact:
+    parsed_vlan_vni_list: "{{ lookup('vars', 'vlan_to_vni') | vlan_to_vni_parser}}"
+- name: Set helping variables
+  tags:
+    - always 
+  set_fact:
+    vlan_to_vni_config: "{{ parsed_vlan_vni_list[0] }}"
+    evpn_rt_config: "{{ parsed_vlan_vni_list[1] }}"
+
 - name: Configure VLANs and map VNIs to them
   tags:
     - vlans
-  nxos_vlan:
-    vlan_state: active
-    mapped_vni: "{{ item.vni | default(item.vlan) }}"
-    state: replaced 
-    admin_state: up 
-    vlan_id: "{{ item.vlan }}"
-  loop: vlans_to_vni
+  nxos_vlans:
+    config: "{{ vlan_to_vni_config }}"
+    state: replaced
+  register: wynik
+
+- name: Configure EVPN for VLANs
+  tags:
+    - vlans
+    - evpn
+  nxos_evpn_vni:
+    route_distinguisher: "{{ item.route_distinguisher }}"
+    route_target_export: "{{ item.route_target_export }}"
+    route_target_import: "{{ item.route_target_import }}"
+    vni: "{{ item.vni }}"
+  register: zmienna
+  loop: "{{ evpn_rt_config }}"
 
 - name: Configure VRF
   tags:
@@ -15,3 +36,21 @@
   nxos_vrf:
     admin_state: up
     name: "{{ vrf }}"
+
+- name: Configure VRF IPv4 AF
+  tags:
+    - vrf
+  cisco.nxos.nxos_vrf_af:
+    afi: ipv4
+    vrf: "{{ vrf }}"
+    route_targets:
+      - rt: 122:322 evpn
+        direction: export
+
+- name: Debug variable
+  tags:
+    - test
+  debug:
+    var: item
+  loop: "{{ vlan_to_vni }}"
+
