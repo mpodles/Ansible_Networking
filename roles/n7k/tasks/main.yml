@@ -1,0 +1,11 @@
+- name: Set hostname
+  tags:
+    - setup
+  nxos_system:
+    hostname: "{{ inventory_hostname }}"
+
+- name: Test 1
+  tags:
+    - test
+  debug:
+    msg: "{{ vars }}"

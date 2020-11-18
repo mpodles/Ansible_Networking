@@ -1,0 +1,9 @@
+- hosts: N7K-02
+  name: Configuring N7K for Fabricpath
+  gather_facts: no
+  tasks:
+    - name: Task that gives N7K-Fabricpath n7k role
+      include_role:
+        name: n7k
+        vars_from: vdc_variables
+        
