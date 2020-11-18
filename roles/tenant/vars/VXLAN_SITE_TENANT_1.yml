@@ -18,9 +18,11 @@ vlan_to_vni:
       - rt: 132:322   
         direction: export
       
-
 l3_vni: 
   vlan: 1
   vni: 100001
-  rt: 555:234
-  rt_evpn: 123:432
+  route_targets:
+      - rt: 122:322   
+        direction: export
+      - rt: 132:322   
+        direction: export
